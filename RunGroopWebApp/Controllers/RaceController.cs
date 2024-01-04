@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RunGroopWebApp.Data;
+using RunGroopWebApp.Models;
 
 namespace RunGroopWebApp.Controllers
 {
@@ -13,8 +15,14 @@ namespace RunGroopWebApp.Controllers
         }
         public IActionResult Index()
         {
-            var Races = _context.Races.ToList();
+            List<Race> Races = _context.Races.ToList();
             return View(Races);
+        }
+
+        public IActionResult Details(int id)
+        {
+            Race race = _context.Races.Include(a => a.Address).FirstOrDefault(c => c.Id == id);
+            return View(race);
         }
     }
 }
